@@ -1,5 +1,11 @@
 import AbstractDriver from '@sqltools/base-driver';
-import { IConnectionDriver, NSDatabase } from '@sqltools/types';
+import {
+  IConnectionDriver,
+  MConnectionExplorer,
+  NSDatabase,
+  ContextValue,
+  Arg0,
+} from "@sqltools/types";
 import { v4 as generateId } from 'uuid';
 import { BigQuery } from '@google-cloud/bigquery';
 import queries from './queries';
@@ -71,4 +77,101 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 
     return resultsAgg;
   }
+
+
+  private async getColumns(
+    parent: NSDatabase.ITable
+  ): Promise<NSDatabase.IColumn[]> {
+    const results = await this.queryResults(this.queries.fetchColumns(parent));
+    return results.map((col) => ({
+      ...col,
+      iconName: col.isPk ? "pk" : null,
+      childType: ContextValue.NO_CHILD,
+      table: parent,
+    }));
+  }
+
+
+
+  /**
+   * This method is a helper to generate the connection explorer tree.
+   * it gets the child items based on current item
+   */
+  public async getChildrenForItem({
+    item,
+    parent,
+  }: Arg0<IConnectionDriver["getChildrenForItem"]>) {
+    switch (item.type) {
+      case ContextValue.CONNECTION:
+      case ContextValue.CONNECTED_CONNECTION:
+        return this.queryResults(this.queries.fetchDatabases())
+      case ContextValue.DATABASE:
+        return (this.queryResults(this.queries.fetchSchemas(parent as NSDatabase.IDatabase)));
+      case ContextValue.SCHEMA:
+          return <MConnectionExplorer.IChildItem[]>[
+            {
+              label: "Tables",
+              type: ContextValue.RESOURCE_GROUP,
+              iconId: "folder",
+              childType: ContextValue.TABLE,
+            },
+            {
+              label: "Views",
+              type: ContextValue.RESOURCE_GROUP,
+              iconId: "folder",
+              childType: ContextValue.VIEW,
+            },
+          ];
+      case ContextValue.TABLE:
+        return this.getColumns(item as NSDatabase.ITable);  
+      case ContextValue.VIEW:
+        return this.getColumns(item as NSDatabase.ITable);
+      case ContextValue.RESOURCE_GROUP:
+        return this.getChildrenForGroup({ item, parent });
+    }
+    return [];
+  }
+
+  /**
+   * This method is a helper to generate the connection explorer tree.
+   * It gets the child based on child types
+   */
+  private async getChildrenForGroup({
+    parent,
+    item,
+  }: Arg0<IConnectionDriver["getChildrenForItem"]>) {
+    switch (item.childType) {
+      case ContextValue.TABLE:
+        // return both tables and external tables
+        return this.queryResults(
+          this.queries.fetchTables(parent as NSDatabase.ISchema)
+        );
+      case ContextValue.VIEW:
+        return this.queryResults(
+          this.queries.fetchViews(parent as NSDatabase.ISchema)
+        );
+    }
+    return [];
+  }
+
+  /**
+   * This method is a helper for intellisense and quick picks.
+   */
+  public async searchItems(
+    itemType: ContextValue,
+    search: string,
+    extraParams: any = {}
+  ): Promise<NSDatabase.SearchableItem[]> {
+    switch (itemType) {
+      case ContextValue.TABLE:
+        return this.queryResults(this.queries.searchTables({ search }));
+      case ContextValue.COLUMN:
+        return this.queryResults(
+          this.queries.searchColumns({ search, ...extraParams })
+        );
+    }
+    return [];
+  }
+
 }
+
