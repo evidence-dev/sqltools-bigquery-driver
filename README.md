@@ -6,14 +6,26 @@
 
 A Visual Studio Code extension which extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
 
+![Connect DB](docs/images/connect-db.gif)
 
 ## Features
+
 - Run queries on BiqQuery
 - Explore datasets, tables and columns in the sidebar
 - View table results by selecting them in the sidebar
 - Completion for common keywords (e.g. SELECT, FROM, WHERE)
 
+
+### Running a query
+
+![Run Query](docs/images/run-query.gif)
+
+### Exploring datasets, tables and columns
+
+![Explore DB](docs/images/db-explorer.gif)
+
 ### Not Implemented
+
 - Auto Completion tables and columns with Intellisense
 
 ## Connection Methods
@@ -26,9 +38,9 @@ Supports the following connection methods:
 For more details on the above connection methods see [connection guides](https://docs.evidence.dev/core-concepts/data-sources/#bigquery).
 
 ## ToDo
-- Fix issue causing <connection-name>.session.sql to be opened
-- Add keywords
-- IntelliSense
+- Fix issue causing `connection-name.session.sql` file to be opened
+- Add BigQuery specific keywords
+- IntelliSense for table and column completion
 
 
 ## Maintained by [<img src="docs/images/evidence.png"  style="height:1em;"/>](https://www.evidence.dev)
