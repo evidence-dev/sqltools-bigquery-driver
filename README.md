@@ -4,6 +4,8 @@
 
 A Visual Studio Code extension which extends the [SQLTools extension](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver to work with Google BigQuery. 
 
+![Connect DB](docs/images/connect-db.gif)
+
 It supports: 
 - Running queries on BiqQuery.
 - Exploring datasets, tables and views.
