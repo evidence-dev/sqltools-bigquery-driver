@@ -6,7 +6,6 @@
 
 A Visual Studio Code extension which extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
 
-![Connect DB](docs/images/connect-db.gif)
 
 ## Features
 - Run queries on BiqQuery
@@ -27,12 +26,12 @@ Supports the following connection methods:
 For more details on the above connection methods see [connection guides](https://docs.evidence.dev/core-concepts/data-sources/#bigquery).
 
 ## ToDo
-- Fix issue causing [connection-name].session.sql to be opened
+- Fix issue causing <connection-name>.session.sql to be opened
 - Add keywords
 - IntelliSense
 
 
-## Maintained by [<img src=docs/images/evidence.png  style="height:1em;"/>](https://www.evidence.dev)
+## Maintained by [<img src="docs/images/evidence.png"  style="height:1em;"/>](https://www.evidence.dev)
 
 This extension is a free, open source community project, maintained by [Evidence.dev](https://www.evidence.dev).
 

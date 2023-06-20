@@ -2,7 +2,7 @@
   "name": "sqltools-bigquery-driver",
   "displayName": "BigQuery Driver for SQLTools",
   "description": "Run Queries and Explore your BigQuery Database in VSCode",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.42.0"
   },
@@ -43,11 +43,11 @@
   ],
   "main": "./out/extension.js",
   "dependencies": {
+    "@google-cloud/bigquery": "6.2.0",
     "@sqltools/base-driver": "latest",
     "@sqltools/types": "latest",
-    "uuid": "^7.0.2",
-    "@google-cloud/bigquery": "6.2.0",
-    "google-auth-library": "8.8.0"
+    "google-auth-library": "8.8.0",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.5.5",
