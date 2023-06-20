@@ -8,7 +8,9 @@ import {
 } from "@sqltools/types";
 import { v4 as generateId } from 'uuid';
 import { BigQuery } from '@google-cloud/bigquery';
+import { OAuth2Client } from 'google-auth-library';
 import queries from './queries';
+import { JSONClient } from 'google-auth-library/build/src/auth/googleauth';
 
 type DriverLib = any;
 type DriverOptions = any;
@@ -25,14 +27,35 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 
 
   public async open() {
+    const getCredentials = () => {
+      const authentication_method = this.credentials.authenticator
+      if (authentication_method === 'CLI') {
+        return {
+          projectId: this.credentials.projectId
+        };
+      } else if (authentication_method === 'OAUTH') {
+        // currently causing error
+        const access_token = this.credentials.token;
+        const oauth = new OAuth2Client();
+        oauth.setCredentials({ access_token });
+        
+        return {
+          // is this a legit way to handle this typescript error
+          authClient: oauth as JSONClient,
+          projectId: this.credentials.projectId
+        };
+      } else {
+        console.log('keyfile', this.credentials.keyfile)
+        return {
+          keyFilename: this.credentials.keyfile
+        }
+      };
+    }
 
-    let connOptions = {
-			keyFilename: this.credentials.database,
-      projectId: this.credentials.projectId,
-		};
+    let connOptions = getCredentials();
 
     this.connection = new Promise((resolve, reject) => {
-      try{
+      try {
         const bigquery = new BigQuery({ ...connOptions, maxRetries: 10 });
         resolve(bigquery);
       } catch (error) {
@@ -41,7 +64,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     });
 
   }
-  
+
 
   public async close() {
     if (!this.connection) return Promise.resolve();
@@ -55,7 +78,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
       const bigquery = await this.connection;
       await bigquery.query('SELECT 1');
       await this.close();
-      
+
     } catch (error) {
       throw new Error('Failed to connect to BigQuery: ' + error.message);
     }
@@ -70,17 +93,17 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     };
     const resultsAgg: NSDatabase.IResult[] = [];
 
-      const [rows] = await bigquery.query(options);
-      resultsAgg.push({
-        cols: Object.keys(rows[0]),
-        connId: this.getId(),
-        messages: [{ date: new Date(), message: `Query executed successfully` }],
-        results: rows,
-        // back to string
-        query: query[0],
-        requestId: opt.requestId,
-        resultId: generateId(),
-      });
+    const [rows] = await bigquery.query(options);
+    resultsAgg.push({
+      cols: Object.keys(rows[0]),
+      connId: this.getId(),
+      messages: [{ date: new Date(), message: `Query executed successfully` }],
+      results: rows,
+      // back to string
+      query: query[0],
+      requestId: opt.requestId,
+      resultId: generateId(),
+    });
 
     return resultsAgg;
   }
@@ -115,22 +138,22 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
       case ContextValue.DATABASE:
         return (this.queryResults(this.queries.fetchSchemas(parent as NSDatabase.IDatabase)));
       case ContextValue.SCHEMA:
-          return <MConnectionExplorer.IChildItem[]>[
-            {
-              label: "Tables",
-              type: ContextValue.RESOURCE_GROUP,
-              iconId: "folder",
-              childType: ContextValue.TABLE,
-            },
-            {
-              label: "Views",
-              type: ContextValue.RESOURCE_GROUP,
-              iconId: "folder",
-              childType: ContextValue.VIEW,
-            },
-          ];
+        return <MConnectionExplorer.IChildItem[]>[
+          {
+            label: "Tables",
+            type: ContextValue.RESOURCE_GROUP,
+            iconId: "folder",
+            childType: ContextValue.TABLE,
+          },
+          {
+            label: "Views",
+            type: ContextValue.RESOURCE_GROUP,
+            iconId: "folder",
+            childType: ContextValue.VIEW,
+          },
+        ];
       case ContextValue.TABLE:
-        return this.getColumns(item as NSDatabase.ITable);  
+        return this.getColumns(item as NSDatabase.ITable);
       case ContextValue.VIEW:
         return this.getColumns(item as NSDatabase.ITable);
       case ContextValue.RESOURCE_GROUP:
@@ -178,6 +201,11 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
         );
     }
     return [];
+  }
+
+  
+  public getStaticCompletions: IConnectionDriver['getStaticCompletions'] = async () => {
+    return {};
   }
 
 }

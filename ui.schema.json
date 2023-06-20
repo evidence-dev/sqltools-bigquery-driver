@@ -1,4 +1,21 @@
 {
-  "ui:order": ["database"],
-  "database": { "ui:widget": "file" }
+  "ui:order": [
+    "authenticator",
+    "keyfile",
+    "projectId",
+    "token"
+  ],
+  "authenticator": {
+    "ui:autofocus": true,
+    "ui:help": "See Authenticator Guide: https://docs.evidence.dev/core-concepts/data-sources/#bigquery"
+  },
+  "keyfile": { 
+    "ui:widget": "file"
+  },
+  "projectId": {
+  },
+  "token": {
+    "ui:widget": "password"
+  }
+
 }
