@@ -35,7 +35,6 @@
     "mtxr.sqltools"
   ],
   "activationEvents": [
-    "*",
     "onLanguage:sql",
     "onCommand:sqltools.*"
   ],
