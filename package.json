@@ -1,12 +1,12 @@
 {
-  "name": "bigquery-driver-for-sqltools",
+  "name": "@evidence-dev/sqltools-bigquery-driver",
   "displayName": "BigQuery Driver for SQLTools",
   "description": "SQLTools BigQuery Driver",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.42.0"
   },
-  "publisher": "archiewood",
+  "publisher": "Evidence",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "mtxr.sqltools"
   ],
   "activationEvents": [
+    "*",
     "onLanguage:sql",
     "onCommand:sqltools.*"
   ],
