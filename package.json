@@ -1,5 +1,5 @@
 {
-  "name": "@evidence-dev/sqltools-bigquery-driver",
+  "name": "sqltools-bigquery-driver",
   "displayName": "BigQuery Driver for SQLTools",
   "description": "SQLTools BigQuery Driver",
   "version": "0.0.1",
@@ -12,12 +12,14 @@
     "type": "git",
     "url": "https://github.com/evidence-dev/sqltools-bigquery-driver"
   },
-  "icon": "default.png",
+  "icon": "docs/images/bigquery-logo.png",
   "bugs": {
     "url": "https://github.com/evidence-dev/sqltools-bigquery-driver/issues"
   },
+  "homepage": "https://evidence.dev",
   "scripts": {
     "vscode:prepublish": "npm run compile",
+    "package": "vsce package",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
   },
