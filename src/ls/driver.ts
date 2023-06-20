@@ -32,9 +32,14 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 		};
 
     this.connection = new Promise((resolve, reject) => {
-    const bigquery = new BigQuery({ ...connOptions, maxRetries: 10 });
-    resolve(bigquery);
+      try{
+        const bigquery = new BigQuery({ ...connOptions, maxRetries: 10 });
+        resolve(bigquery);
+      } catch (error) {
+        reject(error);
+      }
     });
+
   }
   
 
@@ -60,7 +65,8 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     await this.open();
     const bigquery = await this.connection;
     const options = {
-      query: query,
+      // typescript complains if this is not an array
+      query: [query],
     };
     const resultsAgg: NSDatabase.IResult[] = [];
 
@@ -70,7 +76,8 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
         connId: this.getId(),
         messages: [{ date: new Date(), message: `Query executed successfully` }],
         results: rows,
-        query,
+        // back to string
+        query: query[0],
         requestId: opt.requestId,
         resultId: generateId(),
       });

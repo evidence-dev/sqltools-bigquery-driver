@@ -2,7 +2,11 @@
 
 # SQLTools BiqQuery Driver
 
-A Visual Studio Code extension which extends the [SQLTools extension](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver to work with Google BigQuery. It supports running queries on BiqQuery.
+A Visual Studio Code extension which extends the [SQLTools extension](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver to work with Google BigQuery. 
+
+It supports: 
+- Running queries on BiqQuery.
+- Exploring datasets, tables and views.
 
 ## Connection
 
