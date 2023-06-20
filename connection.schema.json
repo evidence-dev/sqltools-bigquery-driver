@@ -3,12 +3,17 @@
   "type": "object",
   "properties": {
     "database": {
-      "title": "Database file",
+      "title": "Json Keyfile",
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "title": "Project ID",
       "type": "string",
       "minLength": 1
     }
   },
   "required": [
-    "database"
+    "database", "projectId"
   ]
 }
