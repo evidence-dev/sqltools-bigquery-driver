@@ -21,7 +21,7 @@ This extension is a free, open source community project, maintained by [Evidence
 
 Evidence is an open source publishing tool for modern data teams, allowing you to build polished data products with just SQL and markdown.
 
-[![Evidence.dev](https://raw.githubusercontent.com/evidence-dev/evidence/main/sites/docs/static/img/evidence.svg)](https://www.evidence.dev)
+[![Evidence.dev](docs/images/evidence.png)](https://www.evidence.dev)
 
 ## ToDo
 - Publish to NPM / VSCode Marketplace
