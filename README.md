@@ -2,6 +2,8 @@
 
 # SQLTools BiqQuery Driver
 
+NOTE: This driver is still a work in progress. There are currently bugs and unimplemented features.
+
 A Visual Studio Code extension which extends the [SQLTools extension](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver to work with Google BigQuery. 
 
 ![Connect DB](docs/images/connect-db.gif)
