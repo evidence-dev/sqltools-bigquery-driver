@@ -10,6 +10,7 @@ import { v4 as generateId } from 'uuid';
 import { BigQuery } from '@google-cloud/bigquery';
 import { OAuth2Client } from 'google-auth-library';
 import queries from './queries';
+import { standardizeResult }  from './utils';
 import { JSONClient } from 'google-auth-library/build/src/auth/googleauth';
 
 type DriverLib = any;
@@ -94,11 +95,12 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     const resultsAgg: NSDatabase.IResult[] = [];
 
     const [rows] = await bigquery.query(options);
+    const standardizedRows = await standardizeResult(rows);
     resultsAgg.push({
-      cols: Object.keys(rows[0]),
+      cols: Object.keys(standardizedRows[0]),
       connId: this.getId(),
       messages: [{ date: new Date(), message: `Query executed successfully` }],
-      results: rows,
+      results: standardizedRows,
       // back to string
       query: query[0],
       requestId: opt.requestId,
