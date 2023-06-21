@@ -1,8 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# SQLTools BiqQuery Driver
-
-**NOTE: This driver is a work in progress. There are currently bugs and unimplemented features.**
+# SQLTools BigQuery Driver
 
 A Visual Studio Code extension which extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
 
