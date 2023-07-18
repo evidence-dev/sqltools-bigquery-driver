@@ -97,7 +97,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     const [rows] = await bigquery.query(options);
     const standardizedRows = await standardizeResult(rows);
     resultsAgg.push({
-      cols: Object.keys(standardizedRows[0]),
+      cols: standardizedRows && standardizedRows.length && Object.keys(standardizedRows[0]),
       connId: this.getId(),
       messages: [{ date: new Date(), message: `Query executed successfully` }],
       results: standardizedRows,
