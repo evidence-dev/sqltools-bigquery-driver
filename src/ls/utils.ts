@@ -6,8 +6,8 @@ const standardizeResult = async (result: any[]): Promise<any[]> => {
 		for (const [key, value] of Object.entries(row)) {
 			if (typeof value === 'object') {
 				if (value) {
-					if (value.value) {
-						standardized[key] = value.value;
+					if (value['value']) {
+						standardized[key] = value['value'];
 					} else {
 						//This is a bigQuery specific workaround for https://github.com/evidence-dev/evidence/issues/792
 						try {

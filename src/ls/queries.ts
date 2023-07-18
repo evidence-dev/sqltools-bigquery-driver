@@ -45,14 +45,6 @@ const fetchTablesAndViews = (
   type: ContextValue,
   tableType: string
 ): IBaseQueries['fetchTables'] => queryFactory`
--- check if there are any tables or views
-IF (
-  SELECT COUNT(*)
-  FROM ${p=>p.schema}.INFORMATION_SCHEMA.TABLES
-  WHERE table_type IN ${tableType}
-  ) > 0 
--- if there are, return them
-THEN
   SELECT 
     table_name AS label,
     table_name AS table,
@@ -61,10 +53,6 @@ THEN
   FROM ${p=>p.schema}.INFORMATION_SCHEMA.TABLES
     WHERE table_type IN ${tableType}
     ORDER BY table_name;
--- otherwise return null
-ELSE
-  SELECT NULL;
-END IF;
 `;
 
 const fetchTables: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValue.TABLE,`('BASE TABLE', 'EXTERNAL')`);
