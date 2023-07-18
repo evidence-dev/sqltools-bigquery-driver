@@ -96,8 +96,20 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 
     const [rows] = await bigquery.query(options);
     const standardizedRows = await standardizeResult(rows);
+    if (!Array.isArray(rows) || !rows.length) {
+      resultsAgg.push({
+        cols: ['No rows returned'],
+        connId: this.getId(),
+        messages: [{ date: new Date(), message: `Query executed successfully but no data was returned` }],
+        results: [],
+        // back to string
+        query: query[0],
+        requestId: opt.requestId,
+        resultId: generateId(),
+      })
+    } else { 
     resultsAgg.push({
-      cols: Object.keys(standardizedRows[0]),
+      cols: standardizedRows && standardizedRows.length && Object.keys(standardizedRows[0]),
       connId: this.getId(),
       messages: [{ date: new Date(), message: `Query executed successfully` }],
       results: standardizedRows,
@@ -106,7 +118,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
       requestId: opt.requestId,
       resultId: generateId(),
     });
-
+  }
     return resultsAgg;
   }
 
