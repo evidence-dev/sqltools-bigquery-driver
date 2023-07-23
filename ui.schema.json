@@ -16,6 +16,9 @@
   },
   "token": {
     "ui:widget": "password"
+  },
+  "location": {
+    "ui:help": "Default `us`. Each connection can access one location. Full location list: https://cloud.google.com/bigquery/docs/locations"
   }
 
 }
