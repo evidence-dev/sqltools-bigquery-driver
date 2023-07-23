@@ -1,8 +1,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# SQLTools BigQuery Driver
+# SQLTools for BigQuery
 
-A Visual Studio Code extension that extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
+## Query and explore BigQuery from VSCode
+
+A VSCode extension that extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
 
 This driver is maintained by [Evidence](https://evidence.dev): an open source BI tool to publish reports with SQL and Markdown.
 
