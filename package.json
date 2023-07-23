@@ -2,7 +2,7 @@
   "name": "sqltools-bigquery-driver",
   "displayName": "BigQuery Driver for SQLTools",
   "description": "Run Queries and Explore your BigQuery Database in VSCode",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.42.0"
   },
