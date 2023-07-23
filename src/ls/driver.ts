@@ -38,7 +38,6 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
           location: this.credentials.location
         };
       } else if (authentication_method === 'OAUTH') {
-        // currently causing error
         const access_token = this.credentials.token;
         const oauth = new OAuth2Client();
         oauth.setCredentials({ access_token });
@@ -50,7 +49,6 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
           location: this.credentials.location
         };
       } else {
-        console.log('keyfile', this.credentials.keyfile)
         return {
           keyFilename: this.credentials.keyfile,
           location: this.credentials.location
@@ -62,7 +60,6 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 
     this.connection = new Promise((resolve, reject) => {
       try {
-        console.log('connOptions', connOptions)
         const bigquery = new BigQuery({ ...connOptions, maxRetries: 10 });
         resolve(bigquery);
       } catch (error) {
