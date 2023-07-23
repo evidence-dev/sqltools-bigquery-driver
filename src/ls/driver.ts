@@ -29,13 +29,15 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 
   public async open() {
     const getCredentials = () => {
+
+      
       const authentication_method = this.credentials.authenticator
       if (authentication_method === 'CLI') {
         return {
-          projectId: this.credentials.projectId
+          projectId: this.credentials.projectId,
+          location: this.credentials.location
         };
       } else if (authentication_method === 'OAUTH') {
-        // currently causing error
         const access_token = this.credentials.token;
         const oauth = new OAuth2Client();
         oauth.setCredentials({ access_token });
@@ -43,12 +45,13 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
         return {
           // is this a legit way to handle this typescript error
           authClient: oauth as JSONClient,
-          projectId: this.credentials.projectId
+          projectId: this.credentials.projectId,
+          location: this.credentials.location
         };
       } else {
-        console.log('keyfile', this.credentials.keyfile)
         return {
-          keyFilename: this.credentials.keyfile
+          keyFilename: this.credentials.keyfile,
+          location: this.credentials.location
         }
       };
     }
@@ -91,6 +94,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     const options = {
       // typescript complains if this is not an array
       query: [query],
+      location: this.credentials.location,
     };
     const resultsAgg: NSDatabase.IResult[] = [];
 

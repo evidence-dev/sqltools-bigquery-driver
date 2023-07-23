@@ -40,7 +40,6 @@ const countRecords: IBaseQueries['countRecords'] = queryFactory`
   FROM \`${p => p.table.schema}.${p => p.table.label}\`
 `;
 
-// BigQuery throws an error if you return an empty result set from the information schema
 const fetchTablesAndViews = (
   type: ContextValue,
   tableType: string

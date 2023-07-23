@@ -22,6 +22,12 @@
         "GCloud CLI"
       ],
       "default": "SERVICE_ACCOUNT"
+    },
+    "location": {
+      "title": "Location",
+      "type": "string",
+      "minLength": 1,
+      "default": "us"
     }
   },
   "dependencies": {
@@ -41,7 +47,7 @@
             }
           },
           "required": [
-            "authenticator", "keyfile"
+            "authenticator", "keyfile", "location"
           ]
         },
         {
@@ -63,7 +69,7 @@
             }
           },
           "required": [
-            "authenticator", "token", "projectId"
+            "authenticator", "token", "projectId", "location"
           ]
         },
         {
@@ -80,7 +86,7 @@
             }
           },
           "required": [
-            "authenticator", "projectId"
+            "authenticator", "projectId", "location"
           ]
         }
       ]

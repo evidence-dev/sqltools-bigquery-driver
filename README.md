@@ -2,7 +2,9 @@
 
 # SQLTools BigQuery Driver
 
-A Visual Studio Code extension which extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
+A Visual Studio Code extension that extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
+
+This driver is maintained by [Evidence](https://evidence.dev): an open source BI tool to publish reports with SQL and Markdown.
 
 ![Connect DB](docs/images/connect-db.gif)
 
@@ -36,16 +38,12 @@ Supports the following connection methods:
 For more details on the above connection methods see [connection guides](https://docs.evidence.dev/core-concepts/data-sources/#bigquery).
 
 ## ToDo
-- Fix issue causing `connection-name.session.sql` file to be opened
-- Add BigQuery specific keywords
+- Add BigQuery-specific keywords
 - IntelliSense for table and column completion
-
 
 ## Maintained by [<img src="docs/images/evidence.png"  style="height:1em;"/>](https://www.evidence.dev)
 
-This extension is a free, open source community project, maintained by [Evidence.dev](https://www.evidence.dev).
-
-Evidence is an open source publishing tool for modern data teams, allowing you to build polished data products with just SQL and markdown.
+Evidence is an open-source publishing tool for modern data teams, allowing you to build polished data products with just SQL and markdown.
 - Star us on [GitHub](https://github.com/evidence-dev/evidence)
 - Read our [Docs](https://docs.evidence.dev)
 - Join us on [Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
