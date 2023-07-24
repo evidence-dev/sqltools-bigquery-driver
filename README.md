@@ -1,4 +1,8 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/Evidence.sqltools-bigquery-driver)
+![Visual Studio Marketplace Last Updated](https://img.shields.io/visual-studio-marketplace/last-updated/Evidence.sqltools-bigquery-driver)
+
+
 
 # SQLTools for BigQuery
 
