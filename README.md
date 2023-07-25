@@ -14,7 +14,7 @@ This driver is maintained by [Evidence](https://evidence.dev): an open source BI
 - Explore datasets, tables and columns in the sidebar
 - View table results by selecting them in the sidebar
 - Completion for common keywords (e.g. SELECT, FROM, WHERE)
-
+- MotherDuck (via service token)
 
 ### Running a query
 
@@ -27,6 +27,7 @@ This driver is maintained by [Evidence](https://evidence.dev): an open source BI
 ### Not Implemented
 
 - Auto Completion tables and columns with Intellisense
+- Loading extensions not included in the [default Node.js installation](#DuckDB-Extensions-Supported)
 
 ## Connection Methods
 
@@ -37,8 +38,30 @@ Supports the following connection methods:
 
 For more details on the above connection methods see [connection guides](https://docs.evidence.dev/core-concepts/data-sources/#bigquery).
 
+## DuckDB Extensions Supported
+
+For clarity, the following DuckDB extensions are supported
+
+| Extension        | Supported |
+|------------------|-----------|
+| arrow            |           |
+| autocomplete     |           |
+| fts              |           |
+| httpfs           |           |
+| icu              | 1         |
+| inet             |           |
+| jemalloc         |           |
+| json             | 1         |
+| motherduck       | 1         |
+| parquet          | 1         |
+| postgres_scanner |           |
+| spatial          |           |
+| sqlite_scanner   |           |
+| tpcds            |           |
+| tpch             |           |
+
 ## ToDo
-- Add BigQuery-specific keywords
+- Add DuckDB-specific keywords
 - IntelliSense for table and column completion
 
 ## Maintained by [<img src="docs/images/evidence.png"  style="height:1em;"/>](https://www.evidence.dev)
