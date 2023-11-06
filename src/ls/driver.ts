@@ -169,6 +169,12 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
             iconId: "folder",
             childType: ContextValue.VIEW,
           },
+          {
+            label: "Routines",
+            type: ContextValue.RESOURCE_GROUP,
+            iconId: "folder",
+            childType: ContextValue.FUNCTION,
+          }
         ];
       case ContextValue.TABLE:
         return this.getColumns(item as NSDatabase.ITable);
@@ -197,6 +203,10 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
       case ContextValue.VIEW:
         return this.queryResults(
           this.queries.fetchViews(parent as NSDatabase.ISchema)
+        );
+      case ContextValue.FUNCTION:
+        return this.queryResults(
+          this.queries.fetchRoutines(parent as NSDatabase.ISchema)
         );
     }
     return [];
