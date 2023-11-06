@@ -76,8 +76,8 @@ const fetchRoutines: IBaseQueries['fetchFunctions'] = queryFactory`
     routine_name AS table,
     routine_schema AS schema,
     routine_definition AS source,
+    routine_definition AS snippet,
     routine_type AS detail,
-    'NO_CHILD' AS childType,
     CASE 
       WHEN routine_type = 'PROCEDURE' THEN 'tasklist'
       ELSE null
@@ -85,6 +85,16 @@ const fetchRoutines: IBaseQueries['fetchFunctions'] = queryFactory`
     '${ContextValue.FUNCTION}' AS type
   FROM ${p=>p.schema}.INFORMATION_SCHEMA.ROUTINES
     ORDER BY routine_type, routine_name;
+`;
+
+const fetchRoutineInfo: IBaseQueries['fetchColumns'] = queryFactory`
+SELECT 
+  routine_definition AS label,
+  '${ContextValue.COLUMN}' as type,
+  'NO_CHILD' as childType,
+  'triangle-right' as iconId
+FROM ${p=>p.schema}.INFORMATION_SCHEMA.ROUTINES
+WHERE routine_name = '${p => p.label}'
 `;
 
 const fetchTables: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValue.TABLE,`('BASE TABLE', 'EXTERNAL')`);
@@ -145,6 +155,7 @@ export default {
   fetchTables,
   fetchViews,
   fetchRoutines,
+  fetchRoutineInfo,
   fetchSchemas,
   fetchDatabases,
   searchTables,

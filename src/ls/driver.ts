@@ -180,6 +180,8 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
         return this.getColumns(item as NSDatabase.ITable);
       case ContextValue.VIEW:
         return this.getColumns(item as NSDatabase.ITable);
+      case ContextValue.FUNCTION:
+        return this.queryResults(this.queries.fetchRoutineInfo(item as NSDatabase.ITable));
       case ContextValue.RESOURCE_GROUP:
         return this.getChildrenForGroup({ item, parent });
     }
