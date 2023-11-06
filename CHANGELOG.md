@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.5
+- View stored procedures, UDFs and table functions in the explorer
+- Fix describeTable command
+- Add icons for data types in the explorer
+- Reduce package size from 10MB to 45KB (99.5% reduction)
+
 ## 0.0.4
 - Adds support for data in non-US regions
 
