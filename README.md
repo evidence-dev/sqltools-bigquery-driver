@@ -10,9 +10,9 @@
 
 A VSCode extension that extends [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools), with a driver for Google BigQuery. 
 
-This driver is maintained by [Evidence](https://evidence.dev): an open source BI tool to publish reports with SQL and Markdown.
+This driver is maintained by [Evidence](https://evidence.dev): an open-source BI tool to generate reports with SQL and Markdown.
 
-![Connect DB](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/connect-db.gif)
+![Connect DB](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/connect-db.gif?raw=true)
 
 ## Features
 
@@ -20,16 +20,16 @@ This driver is maintained by [Evidence](https://evidence.dev): an open source BI
 - Explore datasets, tables and columns in the sidebar
 - View table results by selecting them in the sidebar
 - View stored procedures and functions in the sidebar
-- Completion for common keywords (e.g. SELECT, FROM, WHERE)
+- Completion of common keywords (e.g. SELECT, FROM, WHERE)
 
 
 ### Running a query
 
-![Run Query](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/run-query.gif)
+![Run Query](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/run-query.gif?raw=true)
 
 ### Exploring datasets, tables and columns
 
-![Explore DB](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/db-explorer.gif)
+![Explore DB](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/db-explorer.gif?raw=true)
 
 ### Not Implemented
 

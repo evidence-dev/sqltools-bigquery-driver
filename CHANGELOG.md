@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.6
+- Fix Readme images
+
 ## 0.0.5
 - View stored procedures, UDFs and table functions in the explorer
 - Fix describeTable command
@@ -17,7 +20,6 @@
 - Implements ability to view table results from explorer
 - Adds GCloud CLI and OAuth Access Token as options for authentication
 - Cleans up Connection UI
-
 
 ## 0.0.1
 - Initial release
