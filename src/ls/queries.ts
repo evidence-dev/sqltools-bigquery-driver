@@ -2,11 +2,11 @@ import { IBaseQueries, ContextValue} from '@sqltools/types';
 import queryFactory from '@sqltools/base-driver/dist/lib/factory';
 
 const describeTable: IBaseQueries['describeTable'] = queryFactory`
-  SELECT column_name AS name,
+  SELECT 
+    column_name AS name,
     data_type AS dataType,
-    is_nullable AS isNullable,
-    is_primary_key AS isPk
-  FROM ${p => p.schema}.${p => p.table}.INFORMATION_SCHEMA.COLUMNS
+    is_nullable AS isNullable
+  FROM ${p => p.schema}.INFORMATION_SCHEMA.COLUMNS
   WHERE table_name = '${p => p.label}'
   ORDER BY ordinal_position
 `;
@@ -19,6 +19,21 @@ const fetchColumns: IBaseQueries['fetchColumns'] = queryFactory`
     is_nullable AS isNullable,
     table_name AS table,
     table_schema AS schema,
+    case 
+      WHEN data_type IN ('INT64') THEN 'symbol-number'
+      WHEN data_type IN ( 'NUMERIC', 'BIGNUMERIC','FLOAT64') OR data_type LIKE 'DECIMAL(%' THEN 'symbol-number'
+      WHEN data_type IN ('BIT', 'BITSTRING') THEN 'symbol-text'
+      WHEN data_type IN ('BOOLEAN', 'BOOL', 'LOGICAL') THEN 'symbol-boolean'
+      WHEN data_type IN ('BLOB', 'BYTEA', 'BINARY', 'VARBINARY') THEN 'symbol-binary'
+      WHEN data_type IN ('DATE', 'TIME',  'TIMESTAMP', 'DATETIME', 'TIMESTAMP_NS', 'TIMESTAMP WITH TIME ZONE') THEN 'calendar'
+      WHEN data_type = 'UUID' THEN 'symbol-u'
+      WHEN data_type = 'JSON' THEN 'json'
+      WHEN data_type = 'ARRAY' THEN 'array'
+      WHEN data_type = 'GEOGRAPHY' THEN 'globe'
+      WHEN data_type = 'STRUCT' OR data_type LIKE 'STRUCT%' THEN 'symbol-structure'
+      WHEN data_type IN ('VARCHAR', 'CHAR', 'BPCHAR', 'TEXT', 'STRING') THEN 'symbol-text'
+      ELSE 'symbol-constant'
+    END as iconId,
     data_type AS detail,
     '${ContextValue.COLUMN}' as type
   FROM ${p => p.schema}.INFORMATION_SCHEMA.COLUMNS
@@ -52,6 +67,34 @@ const fetchTablesAndViews = (
   FROM ${p=>p.schema}.INFORMATION_SCHEMA.TABLES
     WHERE table_type IN ${tableType}
     ORDER BY table_name;
+`;
+
+
+const fetchRoutines: IBaseQueries['fetchFunctions'] = queryFactory`
+  SELECT 
+    routine_name AS label,
+    routine_name AS table,
+    routine_schema AS schema,
+    routine_definition AS source,
+    routine_definition AS snippet,
+    routine_type AS detail,
+    CASE 
+      WHEN routine_type = 'PROCEDURE' THEN 'tasklist'
+      ELSE null
+    END AS iconId,
+    '${ContextValue.FUNCTION}' AS type
+  FROM ${p=>p.schema}.INFORMATION_SCHEMA.ROUTINES
+    ORDER BY routine_type, routine_name;
+`;
+
+const fetchRoutineInfo: IBaseQueries['fetchColumns'] = queryFactory`
+SELECT 
+  routine_definition AS label,
+  '${ContextValue.COLUMN}' as type,
+  'NO_CHILD' as childType,
+  'triangle-right' as iconId
+FROM ${p=>p.schema}.INFORMATION_SCHEMA.ROUTINES
+WHERE routine_name = '${p => p.label}'
 `;
 
 const fetchTables: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValue.TABLE,`('BASE TABLE', 'EXTERNAL')`);
@@ -111,6 +154,8 @@ export default {
   fetchRecords,
   fetchTables,
   fetchViews,
+  fetchRoutines,
+  fetchRoutineInfo,
   fetchSchemas,
   fetchDatabases,
   searchTables,

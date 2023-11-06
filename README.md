@@ -4,7 +4,7 @@
 
 
 
-# SQLTools for BigQuery
+# <img src="https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/icons/default.png?raw=true"  style="height:1em;"/> SQLTools for BigQuery
 
 ## Query and explore BigQuery from VSCode
 
@@ -12,23 +12,24 @@ A VSCode extension that extends [SQLTools](https://marketplace.visualstudio.com/
 
 This driver is maintained by [Evidence](https://evidence.dev): an open source BI tool to publish reports with SQL and Markdown.
 
-![Connect DB](docs/images/connect-db.gif)
+![Connect DB](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/connect-db.gif)
 
 ## Features
 
 - Run queries on BiqQuery
 - Explore datasets, tables and columns in the sidebar
 - View table results by selecting them in the sidebar
+- View stored procedures and functions in the sidebar
 - Completion for common keywords (e.g. SELECT, FROM, WHERE)
 
 
 ### Running a query
 
-![Run Query](docs/images/run-query.gif)
+![Run Query](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/run-query.gif)
 
 ### Exploring datasets, tables and columns
 
-![Explore DB](docs/images/db-explorer.gif)
+![Explore DB](https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/db-explorer.gif)
 
 ### Not Implemented
 
@@ -47,11 +48,5 @@ For more details on the above connection methods see [connection guides](https:/
 - Add BigQuery-specific keywords
 - IntelliSense for table and column completion
 
-## Maintained by [<img src="docs/images/evidence.png"  style="height:1em;"/>](https://www.evidence.dev)
-
-Evidence is an open-source publishing tool for modern data teams, allowing you to build polished data products with just SQL and markdown.
-- Star us on [GitHub](https://github.com/evidence-dev/evidence)
-- Read our [Docs](https://docs.evidence.dev)
-- Join us on [Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
-
+### Maintained by [<img src="https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/evidence.png?raw=true"  style="height:1em;"/>](https://www.evidence.dev)
 

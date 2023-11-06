@@ -7,3 +7,5 @@ src/**
 **/.eslintrc.json
 **/*.map
 **/*.ts
+docs/images/**
+node_modules/**

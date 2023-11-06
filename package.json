@@ -2,7 +2,7 @@
   "name": "sqltools-bigquery-driver",
   "displayName": "BigQuery Driver for SQLTools",
   "description": "Run Queries and Explore your BigQuery Database in VSCode",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.42.0"
   },
@@ -12,20 +12,24 @@
     "type": "git",
     "url": "https://github.com/evidence-dev/sqltools-bigquery-driver"
   },
-  "icon": "docs/images/bigquery-logo.png",
+  "icon": "icons/bigquery-logo.png",
   "bugs": {
     "url": "https://github.com/evidence-dev/sqltools-bigquery-driver/issues"
   },
   "homepage": "https://evidence.dev",
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "package": "vsce package",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "package": "vsce package --allow-star-activation",
+    "compile": "tsup src/extension.ts src/ls/plugin.ts -d out --external=vscode",
+    "watch": "tsc -watch -p ./",
+    "publish": "vsce publish --allow-star-activation"
   },
   "keywords": [
     "sqltools-driver",
-    "bigquery"
+    "bigquery",
+    "sqltools",
+    "sql",
+    "bqsql"
   ],
   "categories": [
     "Programming Languages",
@@ -39,20 +43,31 @@
   "activationEvents": [
     "*",
     "onLanguage:sql",
+    "onLanguage:bqsql",
     "onCommand:sqltools.*"
   ],
+  "contributes": {
+    "languages": [
+      {
+          "id": "bqsql",
+          "aliases": [
+              "BigQuery SQL",
+              "bqqsql"
+          ],
+          "extensions": [
+              ".bqsql"
+          ]
+      }
+    ]
+  },
   "main": "./out/extension.js",
-  "dependencies": {
-    "@google-cloud/bigquery": "6.2.0",
+  "devDependencies": {
     "@sqltools/base-driver": "latest",
     "@sqltools/types": "latest",
-    "google-auth-library": "8.8.0",
-    "uuid": "^7.0.2"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.5.5",
     "@types/node": "^14.0.9",
     "@types/vscode": "^1.42.0",
-    "typescript": "^3.7.3"
+    "tsup": "^7.2.0",
+    "typescript": "^5.0.0",
+    "uuid": "^7.0.2"
   }
 }

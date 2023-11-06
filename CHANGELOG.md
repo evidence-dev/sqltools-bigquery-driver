@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.5
+- View stored procedures, UDFs and table functions in the explorer
+- Fix describeTable command
+- Add icons for data types in the explorer
+- Smaller extension size (10MB -> 150KB)
+
 ## 0.0.4
 - Adds support for data in non-US regions
 
