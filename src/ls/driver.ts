@@ -7,8 +7,6 @@ import {
   Arg0,
 } from "@sqltools/types";
 import { v4 as generateId } from 'uuid';
-import { BigQuery } from '@google-cloud/bigquery';
-import { OAuth2Client } from 'google-auth-library';
 import queries from './queries';
 import { standardizeResult }  from './utils';
 import { JSONClient } from 'google-auth-library/build/src/auth/googleauth';
@@ -21,6 +19,12 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     {
       type: AbstractDriver.CONSTANTS.DEPENDENCY_PACKAGE,
       name: '@google-cloud/bigquery',
+      version: '6.2.0',
+    },
+    {
+      type: AbstractDriver.CONSTANTS.DEPENDENCY_PACKAGE,
+      name: 'google-auth-library',
+      version: '8.8.0',
     },
   ];
 
@@ -28,6 +32,8 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
 
 
   public async open() {
+    const BigQuery = this.requireDep('@google-cloud/bigquery').BigQuery;
+    const OAuth2Client = this.requireDep('google-auth-library').OAuth2Client;
     const getCredentials = () => {
 
       

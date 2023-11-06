@@ -60,18 +60,13 @@
     ]
   },
   "main": "./out/extension.js",
-  "dependencies": {
-    "@google-cloud/bigquery": "6.2.0",
+  "devDependencies": {
     "@sqltools/base-driver": "latest",
     "@sqltools/types": "latest",
-    "google-auth-library": "8.8.0",
-    "uuid": "^7.0.2"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.5.5",
     "@types/node": "^14.0.9",
     "@types/vscode": "^1.42.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.0.0",
-    "tsup": "^7.2.0"
+    "uuid": "^7.0.2"
   }
 }
