@@ -21,7 +21,8 @@
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --allow-star-activation",
     "compile": "tsup src/extension.ts src/ls/plugin.ts -d out --external=vscode",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "publish": "vsce publish --allow-star-activation"
   },
   "keywords": [
     "sqltools-driver",
