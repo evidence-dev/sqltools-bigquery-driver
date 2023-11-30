@@ -48,5 +48,8 @@ For more details on the above connection methods see [connection guides](https:/
 - Add BigQuery-specific keywords
 - IntelliSense for table and column completion
 
+## Contributing
+Contributions are welcome. If you need help getting started, feel free to reach out on [Slack](https://slack.evidence.dev) in the #sqltools channel
+
 ### Maintained by [<img src="https://github.com/evidence-dev/sqltools-bigquery-driver/blob/master/docs/images/evidence.png?raw=true"  style="height:1em;"/>](https://www.evidence.dev)
 
