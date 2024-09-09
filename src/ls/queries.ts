@@ -135,6 +135,7 @@ const fetchSchemas: IBaseQueries['fetchSchemas'] = queryFactory`
     'schema' as detail,
     'group-by-ref-type' as iconId
   FROM INFORMATION_SCHEMA.SCHEMATA
+  ORDER BY schema_name
 `;
 
 const fetchDatabases: IBaseQueries['fetchDatabases'] = queryFactory`
@@ -145,6 +146,7 @@ const fetchDatabases: IBaseQueries['fetchDatabases'] = queryFactory`
     'database' as detail
   FROM INFORMATION_SCHEMA.SCHEMATA
   GROUP BY catalog_name
+  ORDER BY catalog_name
 `;
 
 export default {
