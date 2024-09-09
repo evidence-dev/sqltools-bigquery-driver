@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.7
+- Sort datasets and schemas alpahbetically in the explorer
+
 ## 0.0.6
 - Fix Readme images
 
