@@ -19,12 +19,12 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     {
       type: AbstractDriver.CONSTANTS.DEPENDENCY_PACKAGE,
       name: '@google-cloud/bigquery',
-      version: '6.2.0',
+      version: '7.9.0'
     },
     {
       type: AbstractDriver.CONSTANTS.DEPENDENCY_PACKAGE,
       name: 'google-auth-library',
-      version: '8.8.0',
+      version: '9.14.1'
     },
   ];
 
