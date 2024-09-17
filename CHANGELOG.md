@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.9 
+- Adds support for ARRAY results
+- Upgrades BigQuery (@google-cloud/bigquery) to 7.9.0
+
 ## 0.0.8
 - Fix published artifact
 
