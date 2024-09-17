@@ -4,7 +4,15 @@ const standardizeResult = async (result: any[]): Promise<any[]> => {
 	result.forEach((row) => {
 		const standardized = {};
 		for (const [key, value] of Object.entries(row)) {
-			if (typeof value === 'object') {
+			if (Array.isArray(value)) {
+				standardized[key] = value.map((v) => {
+					if (v['value']) {
+						return v['value'];
+					} else {
+						return v;
+					}
+				});
+			} else if (typeof value === 'object') {
 				if (value) {
 					if (value['value']) {
 						standardized[key] = value['value'];
