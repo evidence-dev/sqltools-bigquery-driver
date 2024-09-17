@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.8
+- Fix published artifact
+
 ## 0.0.7
 - Sort datasets and schemas alpahbetically in the explorer
 
