@@ -132,9 +132,11 @@ const searchColumns: IBaseQueries['searchColumns'] = queryFactory`
     c.table_schema AS "schema",
     c.table_catalog AS "database",
     c.data_type AS dataType,
+    CONCAT(c.table_schema, '.', c.table_name) AS tableFullName,
     c.is_nullable AS isNullable,
     CONCAT(c.table_catalog, '.', c.table_schema, '.', c.table_name, '.', c.column_name) AS fullName,
     '${ContextValue.COLUMN}' as type,
+    CONCAT(c.column_name, ' (', c.data_type, ') - ', c.table_schema, '.', c.table_name) as detail,
     CASE 
       WHEN c.data_type IN ('INT64') THEN 'symbol-number'
       WHEN c.data_type IN ( 'NUMERIC', 'BIGNUMERIC','FLOAT64') OR c.data_type LIKE 'DECIMAL(%' THEN 'symbol-number'
@@ -151,16 +153,18 @@ const searchColumns: IBaseQueries['searchColumns'] = queryFactory`
   WHERE 1 = 1
     ${p => p.schema ? `AND c.table_schema = '${p.schema}'` : ''}
     ${p => p.database ? `AND c.table_catalog = '${p.database}'` : ''}
-    ${p => p.tables && p.tables.filter(t => !!t.label).length ? `AND LOWER(c.table_name) IN (${p.tables.filter(t => !!t.label).map(t => `'${t.label.toLowerCase()}'`).join(', ')})` : ''}
+    ${p => p.tables && p.tables.filter && p.tables.filter(t => !!t.label).length ? `AND LOWER(c.table_name) IN (${p.tables.filter(t => !!t.label).map(t => `'${t.label.toLowerCase()}'`).join(', ')})` : ''}
     ${p => p.search ? `AND (
       LOWER(c.column_name) LIKE '%${p.search.toLowerCase()}%'
       OR LOWER(CONCAT(c.table_name, '.', c.column_name)) LIKE '%${p.search.toLowerCase()}%'
       OR LOWER(CONCAT(c.table_schema, '.', c.table_name, '.', c.column_name)) LIKE '%${p.search.toLowerCase()}%'
     )` : ''}
-  ORDER BY c.table_schema ASC,
+  ORDER BY 
+    CASE WHEN LOWER(c.column_name) = LOWER('${p => p.search}') THEN 0 ELSE 1 END,
+    c.table_schema ASC,
     c.table_name ASC,
     c.ordinal_position ASC
-  LIMIT ${p => p.limit || 100}
+  LIMIT ${p => p.limit || 200}
 `;
 
 const fetchSchemas: IBaseQueries['fetchSchemas'] = queryFactory`
