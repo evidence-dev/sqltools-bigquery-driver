@@ -294,6 +294,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
             value: `BigQuery Project: **${dbKey}**`
           }
         };
+      
 
         // Fetch datasets for this project
         try {
@@ -356,7 +357,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
               label: colKey,
               detail: `${col.dataType} - ${col.schema}.${col.table}`,
               filterText: colKey,
-              sortText: 'z:' + colKey, // Lower priority with 'z:'
+              sortText: '0:' + colKey, // Higher priority with '0:' to appear before SQL keywords
               documentation: {
                 kind: 'markdown',
                 value: `Column: **${colKey}**\nType: ${col.dataType}\nTable: ${col.database}.${col.schema}.${col.table}`
@@ -400,12 +401,12 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
     ];
 
     keywords.forEach(keyword => {
-      const priority = ['SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE'].includes(keyword) ? '1:' : '2:';
+      const priority = ['SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE'].includes(keyword) ? '5:' : '6:';
       this.completionsCache[keyword] = {
         label: keyword,
         detail: keyword,
         filterText: keyword,
-        sortText: priority + keyword,
+        sortText: priority + keyword, // Lower priority so columns appear first
         documentation: {
           kind: 'markdown',
           value: `\`\`\`sql\n${keyword}\n\`\`\`\nBigQuery SQL keyword`
@@ -413,24 +414,26 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
       };
     });
 
-    // Add common column names for WHERE clause completions
+    // Add common column names for WHERE clause completions with higher priority
     const commonColumns = [
       'id', 'user_id', 'created_at', 'updated_at', 'deleted_at', 'created_date', 'modified_date',
       'status', 'name', 'email', 'type', 'value', 'amount', 'date', 'timestamp',
       'is_active', 'is_deleted', 'count', 'total', 'price', 'quantity', 'description',
       'code', 'key', 'parent_id', 'order_id', 'product_id', 'customer_id', 'category_id',
-      'start_date', 'end_date', 'expires_at', 'valid_from', 'valid_to'
+      'start_date', 'end_date', 'expires_at', 'valid_from', 'valid_to',
+      // Add specific columns that might be in user's tables
+      'k2_url', 'submission_id', 'document_id', 'file_name', 'file_path'
     ];
 
     commonColumns.forEach(col => {
       this.completionsCache[col] = {
         label: col,
-        detail: 'Common column name',
+        detail: 'Column',
         filterText: col,
-        sortText: '9:' + col,
+        sortText: '0:' + col, // Higher priority with '0:'
         documentation: {
           kind: 'markdown',
-          value: `Common column name: **${col}**\n\nThis is a commonly used column name. The actual column might exist in your tables.`
+          value: `Column: **${col}**\n\nCommonly used column name.`
         }
       };
     });
@@ -562,7 +565,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
         label: func.name + '()',
         detail: func.name,
         filterText: func.name,
-        sortText: '3:' + func.name,
+        sortText: '7:' + func.name, // Lower priority so columns appear first
         documentation: {
           kind: 'markdown',
           value: `\`\`\`sql\n${func.name}()\n\`\`\`\n${func.desc}`
