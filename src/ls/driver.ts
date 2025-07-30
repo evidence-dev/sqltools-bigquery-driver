@@ -9,7 +9,8 @@ import {
 import { v4 as generateId } from 'uuid';
 import queries from './queries';
 import { standardizeResult }  from './utils';
-import { JSONClient } from 'google-auth-library/build/src/auth/googleauth';
+// JSONClient type will be available at runtime from google-auth-library
+type JSONClient = any;
 
 type DriverLib = any;
 type DriverOptions = any;
@@ -301,7 +302,7 @@ export default class BigQueryDriver extends AbstractDriver<DriverLib, DriverOpti
               const tables = await this.queryResults(this.queries.fetchTables(schema));
               
               for (const table of tables) {
-                const tableKey = `${schemaKey}.${table.table}`;
+                const tableKey = `${schemaKey}.${table.label}`;
                 this.dynamicCompletionsCache[tableKey] = {
                   label: tableKey,
                   detail: 'Table',
