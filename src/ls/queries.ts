@@ -101,28 +101,64 @@ const fetchTables: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValu
 const fetchViews: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValue.VIEW, `('VIEW')`);
 
 const searchTables: IBaseQueries['searchTables'] = queryFactory`
-  SELECT table_name AS label,
-    table_type AS type
-  FROM ${p => p.table.schema}.INFORMATION_SCHEMA.TABLES
-  WHERE LOWER(table_name) LIKE '%${p => p.search?.toLowerCase()}%'
-  ORDER BY table_name
+  SELECT 
+    t.table_name AS label,
+    t.table_name AS "table",
+    t.table_schema AS "schema", 
+    t.table_catalog AS "database",
+    CONCAT(t.table_catalog, '.', t.table_schema, '.', t.table_name) AS fullName,
+    CASE 
+      WHEN t.table_type = 'VIEW' THEN '${ContextValue.VIEW}'
+      ELSE '${ContextValue.TABLE}'
+    END AS type,
+    t.table_type AS detail
+  FROM INFORMATION_SCHEMA.TABLES t
+  WHERE 1 = 1
+    ${p => p.schema ? `AND t.table_schema = '${p.schema}'` : ''}
+    ${p => p.database ? `AND t.table_catalog = '${p.database}'` : ''}
+    ${p => p.search ? `AND (
+      LOWER(t.table_name) LIKE '%${p.search.toLowerCase()}%'
+      OR LOWER(CONCAT(t.table_schema, '.', t.table_name)) LIKE '%${p.search.toLowerCase()}%'
+      OR LOWER(CONCAT(t.table_catalog, '.', t.table_schema, '.', t.table_name)) LIKE '%${p.search.toLowerCase()}%'
+    )` : ''}
+  ORDER BY t.table_schema, t.table_name
+  LIMIT ${p => p.limit || 100}
 `;
 
 const searchColumns: IBaseQueries['searchColumns'] = queryFactory`
-  SELECT c.column_name AS label,
+  SELECT 
+    c.column_name AS label,
     c.table_name AS "table",
+    c.table_schema AS "schema",
+    c.table_catalog AS "database",
     c.data_type AS dataType,
     c.is_nullable AS isNullable,
-    c.is_primary_key AS isPk,
-    '${ContextValue.COLUMN}' as type
-  FROM ${p => p.schema}.${p => p.table}.INFORMATION_SCHEMA.COLUMNS AS c
+    CONCAT(c.table_catalog, '.', c.table_schema, '.', c.table_name, '.', c.column_name) AS fullName,
+    '${ContextValue.COLUMN}' as type,
+    CASE 
+      WHEN c.data_type IN ('INT64') THEN 'symbol-number'
+      WHEN c.data_type IN ( 'NUMERIC', 'BIGNUMERIC','FLOAT64') OR c.data_type LIKE 'DECIMAL(%' THEN 'symbol-number'
+      WHEN c.data_type IN ('STRING', 'BYTES') THEN 'symbol-text'
+      WHEN c.data_type IN ('BOOL', 'BOOLEAN') THEN 'symbol-boolean'
+      WHEN c.data_type IN ('DATE', 'TIME', 'DATETIME', 'TIMESTAMP') THEN 'calendar'
+      WHEN c.data_type = 'JSON' THEN 'json'
+      WHEN c.data_type LIKE 'ARRAY%' THEN 'array'
+      WHEN c.data_type LIKE 'STRUCT%' THEN 'symbol-structure'
+      WHEN c.data_type = 'GEOGRAPHY' THEN 'globe'
+      ELSE 'symbol-constant'
+    END as iconId
+  FROM INFORMATION_SCHEMA.COLUMNS AS c
   WHERE 1 = 1
-    ${p => p.tables.filter(t => !!t.label).length ? `AND LOWER(c.table_name) IN (${p.tables.filter(t => !!t.label).map(t => `'${t.label}'`.toLowerCase()).join(', ')})` : ''}
+    ${p => p.schema ? `AND c.table_schema = '${p.schema}'` : ''}
+    ${p => p.database ? `AND c.table_catalog = '${p.database}'` : ''}
+    ${p => p.tables && p.tables.filter(t => !!t.label).length ? `AND LOWER(c.table_name) IN (${p.tables.filter(t => !!t.label).map(t => `'${t.label.toLowerCase()}'`).join(', ')})` : ''}
     ${p => p.search ? `AND (
-      LOWER(c.table_name || '.' || c.column_name) LIKE '%${p.search.toLowerCase()}%'
-      OR LOWER(c.column_name) LIKE '%${p.search.toLowerCase()}%'
+      LOWER(c.column_name) LIKE '%${p.search.toLowerCase()}%'
+      OR LOWER(CONCAT(c.table_name, '.', c.column_name)) LIKE '%${p.search.toLowerCase()}%'
+      OR LOWER(CONCAT(c.table_schema, '.', c.table_name, '.', c.column_name)) LIKE '%${p.search.toLowerCase()}%'
     )` : ''}
-  ORDER BY c.table_name ASC,
+  ORDER BY c.table_schema ASC,
+    c.table_name ASC,
     c.ordinal_position ASC
   LIMIT ${p => p.limit || 100}
 `;
@@ -149,6 +185,58 @@ const fetchDatabases: IBaseQueries['fetchDatabases'] = queryFactory`
   ORDER BY catalog_name
 `;
 
+const searchDatabases: IBaseQueries['searchTables'] = queryFactory`
+  SELECT
+    catalog_name as label,
+    catalog_name as database,
+    '${ContextValue.DATABASE}' as type,
+    'database' as detail
+  FROM INFORMATION_SCHEMA.SCHEMATA
+  WHERE LOWER(catalog_name) LIKE '%${p => p.search?.toLowerCase()}%'
+  GROUP BY catalog_name
+  ORDER BY catalog_name
+`;
+
+const searchSchemas: IBaseQueries['searchTables'] = queryFactory`
+  SELECT
+    schema_name as label,
+    schema_name as schema,
+    '${ContextValue.SCHEMA}' as type,
+    'schema' as detail,
+    'group-by-ref-type' as iconId
+  FROM ${p => p.database ? p.database : ''}.INFORMATION_SCHEMA.SCHEMATA
+  WHERE LOWER(schema_name) LIKE '%${p => p.search?.toLowerCase()}%'
+  ORDER BY schema_name
+`;
+
+const searchViews: IBaseQueries['searchTables'] = queryFactory`
+  SELECT 
+    table_name AS label,
+    table_name AS table,
+    table_schema AS schema,
+    '${ContextValue.VIEW}' AS type
+  FROM ${p => p.schema ? p.schema : ''}.INFORMATION_SCHEMA.TABLES
+  WHERE table_type = 'VIEW'
+    AND LOWER(table_name) LIKE '%${p => p.search?.toLowerCase()}%'
+  ORDER BY table_name
+`;
+
+const searchFunctions: IBaseQueries['searchTables'] = queryFactory`
+  SELECT 
+    routine_name AS label,
+    routine_name AS table,
+    routine_schema AS schema,
+    routine_type AS detail,
+    CASE 
+      WHEN routine_type = 'PROCEDURE' THEN 'tasklist'
+      ELSE null
+    END AS iconId,
+    '${ContextValue.FUNCTION}' AS type
+  FROM ${p => p.schema ? p.schema : ''}.INFORMATION_SCHEMA.ROUTINES
+  WHERE LOWER(routine_name) LIKE '%${p => p.search?.toLowerCase()}%'
+  ORDER BY routine_type, routine_name
+`;
+
 export default {
   describeTable,
   countRecords,
@@ -162,5 +250,8 @@ export default {
   fetchDatabases,
   searchTables,
   searchColumns,
-  
+  searchDatabases,
+  searchSchemas,
+  searchViews,
+  searchFunctions,
 }
