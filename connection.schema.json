@@ -28,6 +28,30 @@
       "type": "string",
       "minLength": 1,
       "default": "us"
+    },
+    "previewLimit": {
+      "title": "Preview Limit",
+      "description": "Number of rows fetched per page when browsing query results or table data",
+      "type": "integer",
+      "minimum": 1,
+      "default": 50
+    },
+    "connectionInitSql": {
+      "title": "Connection Init SQL",
+      "description": "SQL script executed once in a BigQuery session when the connection is opened (e.g. DECLARE/SET session variables, temp tables). Requires BigQuery session support.",
+      "type": "string"
+    },
+    "disablePagination": {
+      "title": "Disable Query Pagination",
+      "description": "Disable automatic LIMIT/OFFSET pagination for console SELECT/WITH queries and always fetch the full result set in one go",
+      "type": "boolean",
+      "default": false
+    },
+    "disablePaginationCount": {
+      "title": "Disable Exact Row Count",
+      "description": "Skip the extra COUNT(1) query used to show an exact total number of rows when paginating; shows an estimate instead (\"at least N rows\")",
+      "type": "boolean",
+      "default": false
     }
   },
   "dependencies": {
